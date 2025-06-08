@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ pet.name }} - Pet Profile{% endblock %}
+
+{% block content %}
+<section class="dashboard-header text-center">
+  <div class="container">
+    <h2>{{ pet.name }}'s Profile</h2>
+    <p>Species: {{ pet.species|capfirst }} | Breed: {{ pet.breed }}</p>
+  </div>
+</section>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      {% if pet.photo %}
+        <img src="{{ pet.photo.url }}" alt="{{ pet.name }}" class="img-fluid rounded shadow-sm mb-3" />
+      {% else %}
+        <div class="bg-light text-center p-5 rounded shadow-sm mb-3">
+          <i class="fas fa-paw fa-4x text-muted"></i>
+          <p class="mt-2 text-muted">No photo available</p>
+        </div>
+      {% endif %}
+
+      <ul class="list-group mb-3">
+        <li class="list-group-item"><strong>Gender:</strong> {{ pet.gender|capfirst }}</li>
+        <li class="list-group-item"><strong>Birthdate:</strong> {{ pet.birthdate }}</li>
+        <li class="list-group-item"><strong>Weight:</strong> {{ pet.weight }} kg</li>
+        <li class="list-group-item"><strong>Color:</strong> {{ pet.color }}</li>
+        <li class="list-group-item"><strong>Microchip ID:</strong> {{ pet.microchip_id|default:"N/A" }}</li>
+      </ul>
+
+      <div class="d-grid">
+        <a href="{% url 'edit_pet' pet.id %}" class="btn btn-outline-primary">Edit Pet</a>
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <!-- Appointments -->
+      <h4>Appointments</h4>
+      {% if appointments %}
+      <table class="table mb-4">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Veterinarian</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for appt in appointments %}
+          <tr>
+            <td>{{ appt.appointment_date|date:"Y-m-d H:i" }}</td>
+            <td>{{ appt.veterinarian.user.get_full_name }}</td>
+            <td><span class="badge badge-{{ appt.status }}">{{ appt.status|capfirst }}</span></td>
+            <td><a href="{% url 'appointment_detail' appt.id %}">Details</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+        <p>No appointments available.</p>
+      {% endif %}
+
+      <!-- Examinations -->
+      <h4>Examinations</h4>
+      {% if examinations %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Veterinarian</th>
+            <th>Weight</th>
+            <th>Temp</th>
+            <th>HR</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for exam in examinations %}
+          <tr>
+            <td>{{ exam.examination_date|date:"Y-m-d" }}</td>
+            <td>{{ exam.veterinarian.user.get_full_name }}</td>
+            <td>{{ exam.weight }} kg</td>
+            <td>{{ exam.temperature }}°C</td>
+            <td>{{ exam.heart_rate }} bpm</td>
+            <td><a href="{% url 'examination_detail' exam.id %}">View</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+        <p>No examinations recorded.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

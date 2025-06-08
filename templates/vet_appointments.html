@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Appointments - Veterinarian{% endblock %}
+
+{% block content %}
+<section class="dashboard-header text-center">
+  <div class="container">
+    <h2>My Appointments</h2>
+    <p>All scheduled and completed appointments assigned to you.</p>
+  </div>
+</section>
+
+<div class="container py-4">
+  {% if appointments %}
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Pet</th>
+          <th>Owner</th>
+          <th>Status</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for appt in appointments %}
+        <tr>
+          <td>{{ appt.appointment_date|date:"Y-m-d H:i" }}</td>
+          <td>{{ appt.pet.name }}</td>
+          <td>{{ appt.pet.owner.get_full_name }}</td>
+          <td><span class="badge badge-{{ appt.status }}">{{ appt.status|capfirst }}</span></td>
+          <td><a href="{% url 'appointment_detail' appt.id %}">View</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <p>No appointments found.</p>
+  {% endif %}
+</div>
+{% endblock %}

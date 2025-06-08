@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Examination Details{% endblock %}
+
+{% block content %}
+<section class="dashboard-header text-center">
+  <div class="container">
+    <h2>Examination for {{ examination.pet.name }}</h2>
+    <p>By Dr. {{ examination.veterinarian.user.get_full_name }} on {{ examination.examination_date|date:"Y-m-d" }}</p>
+  </div>
+</section>
+
+<div class="container py-4">
+  <div class="card shadow mb-4">
+    <div class="card-body">
+      <p><strong>Weight:</strong> {{ examination.weight }} kg</p>
+      <p><strong>Temperature:</strong> {{ examination.temperature }} °C</p>
+      <p><strong>Heart Rate:</strong> {{ examination.heart_rate }} bpm</p>
+      <p><strong>Notes:</strong><br>{{ examination.examination_notes }}</p>
+    </div>
+  </div>
+
+  <!-- Diagnosis Section -->
+  <div class="mb-4">
+    <h4>Diagnoses</h4>
+    {% if diagnoses %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Name</th>
+          <th>Severity</th>
+          <th>Notes</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for diag in diagnoses %}
+        <tr>
+          <td>{{ diag.diagnosis_code|default:"-" }}</td>
+          <td>{{ diag.diagnosis_name }}</td>
+          <td>{{ diag.severity|capfirst }}</td>
+          <td>{{ diag.diagnosis_notes|truncatechars:50 }}</td>
+          <td>
+            <a href="{% url 'add_treatment' diag.id %}" class="btn btn-sm btn-outline-primary">Add Treatment</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+      <p>No diagnoses added yet.</p>
+    {% endif %}
+
+    <a href="{% url 'add_diagnosis' examination.id %}" class="btn btn-primary mt-3">Add Diagnosis</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Pets{% endblock %}
+
+{% block content %}
+<section class="dashboard-header text-center">
+  <div class="container">
+    <h2>Welcome, {{ user.first_name|default:user.username }}!</h2>
+    <p>Here's an overview of your pets and appointments.</p>
+  </div>
+</section>
+
+<div class="container">
+  <!-- Pets -->
+  <div class="row">
+    <div class="col-12 mb-3">
+      <h4>My Lovely Pets</h4>
+    </div>
+    {% if pets %}
+      {% for pet in pets %}
+      <div class="col-md-4">
+        <div class="pet-card">
+          {% if pet.photo %}
+          <img src="{{ pet.photo.url }}" alt="{{ pet.name }}" class="pet-photo" />
+          {% else %}
+          <div class="pet-photo d-flex justify-content-center align-items-center">
+            <i class="fas fa-dog fa-3x text-white"></i>
+          </div>
+          {% endif %}
+          <div class="pet-info">
+            <h5 class="pet-name">{{ pet.name }}</h5>
+            <p class="pet-details">{{ pet.species|capfirst }} - {{ pet.breed }}</p>
+              <div class="d-flex justify-content-center gap-3 mt-3">
+                <a href="{% url 'pet_detail' pet.id %}" 
+                  class="btn rounded-pill text-white shadow text-center fw-semibold"
+                  style="min-width: 140px; background-color: #a4c48c; border: none;">
+                  View Profile
+                </a>
+
+                <a href="{% url 'schedule_appointment' %}?pet_id={{ pet.id }}" 
+                  class="btn rounded-pill text-white shadow text-center fw-semibold"
+                  style="min-width: 140px; background-color: #a4c48c; border: none;">
+                  Book Appointment
+                </a>
+              </div>
+
+
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      <div class="col-md-4 mb-4">
+        <a href="{% url 'add_pet' %}" class="pet-card d-flex flex-column justify-content-center align-items-center text-success text-decoration-none shadow-sm" style="height: 100%; border: 2px dashed #198754; border-radius: 20px;">
+          <i class="fas fa-plus fa-2x mb-2"></i>
+          <strong>Add New Pet</strong>
+        </a>
+      </div>
+
+
+    {% else %}
+      <div class="col-12">
+        <p>You haven't added any pets yet. <a href="{% url 'add_pet' %}">Add one now</a>.</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Recent Appointments -->
+  <div class="row mt-5">
+    <div class="col-12 mb-3">
+      <h4>Recent Appointments</h4>
+    </div>
+    {% if recent_appointments %}
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Pet</th>
+              <th>Veterinarian</th>
+              <th>Status</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for appt in recent_appointments %}
+            <tr>
+              <td>{{ appt.appointment_date|date:"Y-m-d H:i" }}</td>
+              <td>{{ appt.pet.name }}</td>
+              <td>{{ appt.veterinarian.user.get_full_name }}</td>
+              <td><span class="badge badge-{{ appt.status }}">{{ appt.status|capfirst }}</span></td>
+              <td><a href="{% url 'appointment_detail' appt.id %}">View</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="col-12">
+        <p>No recent appointments found.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

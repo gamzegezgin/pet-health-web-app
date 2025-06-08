@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}My Patients{% endblock %}
+{% block content %}
+<div class="container mt-5">
+  <h3 class="mb-4">My Patients</h3>
+  <div class="row">
+    {% for pet in pets %}
+    <div class="col-md-4">
+      <div class="pet-card">
+        <div class="pet-photo d-flex justify-content-center align-items-center">
+          <i class="fas fa-dog fa-3x text-white"></i>
+        </div>
+        <div class="pet-info text-center">
+          <h5>{{ pet.name }}</h5>
+          <p>{{ pet.species|capfirst }} - {{ pet.breed }}</p>
+          <a href="{% url 'pet_detail' pet.id %}" class="btn btn-outline-success btn-sm rounded-pill px-4">View Profile</a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p>You haven't examined any pets yet.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Pet Health Management System{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="fade-in">Pet Health Management System</h1>
+                <p class="fade-in">Professional veterinary care management for your beloved pets. Schedule appointments, track health records, and ensure your pets receive the best care possible.</p>
+                {% if not user.is_authenticated %}
+                    <div class="d-flex gap-3 justify-content-center justify-content-lg-start">
+                        <a href="#login-options" class="btn btn-light btn-lg">
+                            <i class="fas fa-arrow-down me-2"></i>Get Started
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="d-flex gap-3 justify-content-center justify-content-lg-start">
+                        <a href="{% url 'dashboard' %}" class="btn btn-light btn-lg">
+                            <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-lg-6">
+                <div class="text-center">
+                    <i class="fas fa-heartbeat" style="font-size: 8rem; opacity: 0.8;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if not user.is_authenticated %}
+<!-- Login Options Section -->
+<section id="login-options" class="login-options">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="mb-3">Choose Your Account Type</h2>
+            <p class="text-muted">Select the appropriate option to get started with our pet health management system.</p>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-5">
+                <div class="login-card">
+                    <i class="fas fa-user"></i>
+                    <h3>Pet Owner</h3>
+                    <p class="text-muted mb-4">
+                        Manage your pet's health records, schedule appointments, and track medical history.
+                    </p>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'user_register' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-user-plus me-2"></i>Register as Pet Owner
+                        </a>
+                        <a href="{% url 'login' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-5">
+                <div class="login-card">
+                    <i class="fas fa-user-md"></i>
+                    <h3>Veterinarian</h3>
+                    <p class="text-muted mb-4">
+                        Manage patient records, conduct examinations, and provide professional care.
+                    </p>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'vet_register' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-stethoscope me-2"></i>Register as Veterinarian
+                        </a>
+                        <a href="{% url 'login' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Features Section -->
+<section class="py-5" style="background-color: white;">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="mb-3">Key Features</h2>
+            <p class="text-muted">Everything you need to manage pet health efficiently</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-calendar-alt fa-3x text-primary mb-3"></i>
+                        <h5>Appointment Scheduling</h5>
+                        <p class="text-muted">Easy online appointment booking with your preferred veterinarian.</p>
+                    </div>
+                </div>
+            </div>
+            
+                        <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-file-medical fa-3x text-primary mb-3"></i>
+                        <h5>Medical Records</h5>
+                        <p class="text-muted">Track your pet’s health history, examinations, and treatments in one place.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-user-md fa-3x text-primary mb-3"></i>
+                        <h5>Veterinary Profiles</h5>
+                        <p class="text-muted">Find detailed information about each veterinarian, including their specialization and clinic info.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-notes-medical fa-3x text-primary mb-3"></i>
+                        <h5>Diagnosis & Treatment</h5>
+                        <p class="text-muted">Easily add and manage medical diagnoses and prescribed treatments for pets.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Appointment Details{% endblock %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <div class="card shadow">
+      <div class="card-header">
+        <h3 class="text-center">Appointment Details</h3>
+        <p class="text-muted text-center">{{ appointment.pet.name }} – {{ appointment.appointment_date }}</p>
+      </div>
+      <div class="card-body">
+
+        {% if examination %}
+        <h5 class="text-success">Examination</h5>
+        <ul>
+          <li><strong>Weight:</strong> {{ examination.weight }} kg</li>
+          <li><strong>Temperature:</strong> {{ examination.temperature }} °C</li>
+          <li><strong>Heart Rate:</strong> {{ examination.heart_rate }} bpm</li>
+          <li><strong>Notes:</strong> {{ examination.examination_notes }}</li>
+        </ul>
+        {% endif %}
+
+        {% if diagnosis %}
+        <h5 class="text-info mt-4">Diagnosis</h5>
+        <ul>
+          <li><strong>Code:</strong> {{ diagnosis.diagnosis_code }}</li>
+          <li><strong>Name:</strong> {{ diagnosis.diagnosis_name }}</li>
+          <li><strong>Severity:</strong> {{ diagnosis.severity }}</li>
+          <li><strong>Notes:</strong> {{ diagnosis.diagnosis_notes }}</li>
+        </ul>
+        {% endif %}
+
+        {% if treatment %}
+        <h5 class="text-primary mt-4">Treatment</h5>
+        <ul>
+          <li><strong>Name:</strong> {{ treatment.treatment_name }}</li>
+          <li><strong>Description:</strong> {{ treatment.treatment_description }}</li>
+          <li><strong>Medication:</strong> {{ treatment.medication }}</li>
+          <li><strong>Dosage:</strong> {{ treatment.dosage }}</li>
+          <li><strong>Frequency:</strong> {{ treatment.frequency }}</li>
+          <li><strong>Duration:</strong> {{ treatment.duration }}</li>
+          <li><strong>Start Date:</strong> {{ treatment.start_date }}</li>
+          <li><strong>End Date:</strong> {{ treatment.end_date }}</li>
+          <li><strong>Notes:</strong> {{ treatment.notes }}</li>
+        </ul>
+        {% endif %}
+
+        {% if not examination and not diagnosis and not treatment %}
+        <p class="text-muted">No medical records available yet for this appointment.</p>
+        {% endif %}
+
+        <div class="text-center mt-4">
+          <a href="{% url 'my_appointments' %}" class="btn btn-outline-secondary">← Back to Appointments</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

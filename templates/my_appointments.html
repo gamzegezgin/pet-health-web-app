@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Appointments{% endblock %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="mb-0">My Appointments</h2>
+      <a href="{% url 'schedule_appointment' %}" class="btn btn-success rounded-pill px-4">+ New Appointment</a>
+    </div>
+
+    {% if upcoming_appointments %}
+    <h4 class="text-success mt-4">Upcoming Appointments</h4>
+    <div class="table-responsive mb-5">
+      <table class="table table-bordered align-middle">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Pet</th>
+            <th>Veterinarian</th>
+            <th>Status</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for appt in upcoming_appointments %}
+          <tr>
+            <td>{{ appt.appointment_date|date:"Y-m-d H:i" }}</td>
+            <td>{{ appt.pet.name }}</td>
+            <td>{{ appt.veterinarian.user.get_full_name }}</td>
+            <td><span class="badge bg-warning text-dark">{{ appt.status|capfirst }}</span></td>
+            <td><a href="{% url 'appointment_detail' appt.id %}" class="btn btn-sm btn-outline-primary">View</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+
+    {% if past_appointments %}
+    <h4 class="text-muted">Past Appointments</h4>
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Pet</th>
+            <th>Veterinarian</th>
+            <th>Status</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for appt in past_appointments %}
+          <tr>
+            <td>{{ appt.appointment_date|date:"Y-m-d H:i" }}</td>
+            <td>{{ appt.pet.name }}</td>
+            <td>{{ appt.veterinarian.user.get_full_name }}</td>
+            <td><span class="badge bg-secondary">{{ appt.status|capfirst }}</span></td>
+            <td><a href="{% url 'appointment_detail' appt.id %}" class="btn btn-sm btn-outline-secondary">View</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+
+    {% if not upcoming_appointments and not past_appointments %}
+    <p class="text-center text-muted">No appointments found.</p>
+    {% endif %}
+
+  </div>
+</section>
+{% endblock %}
